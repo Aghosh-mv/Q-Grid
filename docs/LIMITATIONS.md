@@ -104,6 +104,106 @@ Hackathon judges consistently reward teams who find their own limits before the 
 
 **PROOF.** `results_year/year_merged.json` (kpi_year: `deferred` 2,384, `avg_wait_slots` 0.306, `capacity_violations` 0); `results_year/COMPARISON.md` (track KPIs: "2,384 deferred-load events, zero violations"); `src/qgrid_year.py` (deferred-load carry: overflow into the next window).
 
+## 11. Amplitude encoding compresses data, not decision variables.
+
+**The limit.** The 6-qubit win applies to the data channel (profiles, shares). The dispatch QUBO itself still needs 11–20 qubits on the cells we ship; nobody should read "6 qubits" as the whole problem fitting there.
+
+**Why it matters.** Overclaiming qubit counts is the fastest way to lose a technical audience.
+
+**The fix.** We say exactly that, on every slide and in the report: plan-compression handles the decision variables (504 → 11–20), amplitude encoding handles the data (48 slots → 6 qubits), and QAE handles estimation (65× fewer queries). Three levers, each labeled.
+
+**PROOF.** `results_year/amplitude_encoding.json` (section 4: the three-encoding table, 504 vs 11–20 vs 6); `results_year/COMPARISON.md` (qubit-economics section).
+
+## 12. Our QAE is QPE-based — deep circuits for NISQ hardware.
+
+**The limit.** Canonical QPE-based amplitude estimation uses m=6 control qubits and controlled powers of Q — circuit depth real 2026 hardware cannot hold reliably.
+
+**Why it matters.** An algorithm that needs fault tolerance is not a near-term deployment claim.
+
+**The fix.** We ship the measurement honestly: 63 oracle calls matching 4,096 Monte-Carlo samples (65× query reduction) is the *asymptotic* claim, and the repo says the NISQ-friendly variant (iterative AQAE with m=1…3) is the porting target. The query count, not the circuit, is the contribution.
+
+**PROOF.** `results_year/amplitude_encoding.json` (`oracle_calls` 63, `mc_shots_equivalent` 4096); `ROADMAP.md` (AQAE entry).
+
+## 13. Zero-padding 48 → 64 amplitudes wastes slack.
+
+**The limit.** A 48-slot profile rides 2^6 = 64 amplitudes; 16 amplitudes (25% of the state space) are padding and carry no information.
+
+**Why it matters.** Padding is wasted Hilbert space — and wasted attention if unexplained.
+
+**The fix.** Quantified, not hidden: the padding costs zero extra qubits (still 6) and zero extra rotations (prep stays at the Shende–Bullock–Markov bound for n=6), and the QAE anchors were chosen on padded-native quantities. Amplitude-aware slot counts (e.g. 32-slot days) are a one-line change in the profile builder.
+
+**PROOF.** `src/amplitude_encoding.py` (zero-pad + prep counts 47 Ry / 57 CNOT); `results_year/amplitude_encoding.json`.
+
+## 14. Single-seed results (seed 42) — no variance bands.
+
+**The limit.** Every headline number comes from seed 42. A different seed shifts costs by a few percent; we do not publish variance bands.
+
+**Why it matters.** Single-run numbers can flatter an algorithm by luck.
+
+**The fix.** The seed is pinned and documented so every number is exactly regenerable (that is why the audit could re-verify 30/30), the audit instrument itself samples 30 independent windows instead of cherry-picking one, and multi-seed sweeps are queued on the roadmap as the first robustness pass.
+
+**PROOF.** `README.md` (Quickstart: "fully reproducible, SEED = 42"); `src/qgrid_year.py` (SEED constant); `results_year/quantum_audit_all.csv` (30 stratified cells).
+
+## 15. Static time-of-use tariffs — no dynamic or real-time pricing.
+
+**The limit.** Tariffs follow a fixed ToU curve with tsuyu-season seasonality. Real Tokyo pricing reacts to day-ahead markets and grid signals.
+
+**Why it matters.** A dispatch layer tuned only to static prices over-shifts when prices move intra-day.
+
+**The fix.** The tariff is a data input, not code: `tariff(τ)` is a per-slot array the year runner reads, so dynamic prices drop in without touching the QUBO. The amplitude-encoded data channel was built exactly for this — a 48-slot price/solar profile swaps onto 6 qubits at fidelity 1.0, so a re-price is a re-encode, not a redesign.
+
+**PROOF.** `src/qgrid_year.py` (tariff array as input); `results_year/amplitude_encoding.json` (profile swap at fidelity 1.000000).
+
+## 16. The audit samples ~2% of the year's dispatch windows.
+
+**The limit.** 30 matched cells out of ~1,460 yearly windows. The ¥293/window contested figure is a per-window mechanism, not a year-total claim.
+
+**Why it matters.** Extrapolating a 2% sample to a year total would be exactly the spin we refuse.
+
+**The fix.** The caveat is printed where the number is; cells are stratified across all six chunks (5 per chunk) rather than clustered; and every audit row is in the committed CSV so anyone can re-stratify. Scaling the audit to every window is embarrassingly parallel and queued.
+
+**PROOF.** `results_year/COMPARISON.md` (explicit ~2% caveat); `results_year/quantum_audit_all.csv` (30 rows, chunk column).
+
+## 17. QAOA depth p=1 only.
+
+**The limit.** The quantum track runs p=1 with COBYLA. Higher p can improve approximation on harder ratios; we do not ship it.
+
+**Why it matters.** A reviewer will ask whether p=1 is a toy.
+
+**The fix.** The empirical answer is already committed: on 30 identical QUBOs with exact ground truth, p=1 hit the optimum 30/30 times — there was nothing left for p=2 to recover on these instances. p=2+ matters as cells grow past 20 qubits, which is exactly where the exact guard forces the handoff anyway.
+
+**PROOF.** `results_year/quantum_audit_all.csv` (`qaoa_optimal` 30/30); `results_year/COMPARISON.md`.
+
+## 18. Fleet growth (48 → 180 EVs) confounds naive track comparison.
+
+**The limit.** The classical track serves half-grown demand and the quantum track serves the rest; raw year totals are not comparable across tracks.
+
+**Why it matters.** Comparing raw totals would credit or blame quantum for fleet growth.
+
+**The fix.** This is why the matched-window audit exists: both tracks are compared only inside 30 identical-QUBO cells where fleet state is held fixed, and the year report's headline claims come from the audit, never from cross-track totals. We treat the confound as a first-class design constraint, not a footnote.
+
+**PROOF.** `docs/LEARNINGS.md` (section 2, the confound paragraph); `results_year/COMPARISON.md` (methodology).
+
+## 19. No run on physical IBM Quantum hardware.
+
+**The limit.** Every quantum result is a statevector/Aer-class simulation. No transpiled job has touched a real QPU.
+
+**Why it matters.** Simulator results say nothing about decoherence, readout error or queue latency.
+
+**The fix.** We scope the claim precisely: the contribution is the problem mapping, the compressed encodings and the measured query reduction — all simulator-verifiable — and the repo documents the exact simulator backend so runs are reproducible without IBM Quantum access. Hardware transpilation of the 6-qubit prep (already depth-bounded) is the designated first hardware job.
+
+**PROOF.** `src/qiskit_bridge.py` (Qiskit 2.6 StatePreparation + StatevectorSampler cross-check, fidelity 1.000000, `results_year/qiskit_bridge.json`); `docs/COUNTER_ANSWERS.md`.
+
+## 20. Residual driver wait is small but nonzero.
+
+**The limit.** Even with the deferred-load queue, mean wait is 0.306 slots — the system manages congestion, it does not abolish it.
+
+**Why it matters.** "Zero wait" would be a false promise; the departure guarantee is statistical, not absolute.
+
+**The fix.** The wait is priced into the objective (urgency weights ¥260/¥150/¥80 per slot) so the optimizer buys wait reductions only where they are cheap, and the ensemble plan menu gives operators a near-optimal re-plan when a driver rejects the schedule. We publish the residual (0.306 slots) rather than a round zero.
+
+**PROOF.** `results_year/year_merged.json` (`avg_wait_slots` 0.306, `deferred` 2384); `results/` demo run (wait −21.3% vs FCFS).
+
 ## How to read this page
 
 Every PROOF line above points at code or data committed in this repository, and every number on it is regenerated by the scripts that produced `results_year/` and `results_year_c1..c6`. Nothing here is a projection: every artifact cited above is committed next to this page. Re-run the repo and this page can be re-checked line by line against fresh output. That is the point — the limitations page cannot drift from reality, because reality is committed next to it.

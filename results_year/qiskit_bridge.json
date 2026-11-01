@@ -1,0 +1,13 @@
+{
+  "qiskit_version": "2.6.1",
+  "data_qubits": 6,
+  "statevector_fidelity": 1.0,
+  "shots": 4096,
+  "sampled_total_variation": 0.033,
+  "circuit_depth": 1,
+  "gate_counts": {
+    "isometry_to_uncompute_dg": 1
+  },
+  "naive_onehot_qubits": 48,
+  "seed": 42
+}
