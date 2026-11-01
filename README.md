@@ -10,6 +10,14 @@
 
 ---
 
+## 📋 Problem statement
+
+Urban EV charging is a congestion problem with a price on every minute of it. Tokyo's charging network is a patchwork of stations with a handful of ports each; at midday, solar glut makes electricity nearly free while evenings price it at a premium — yet drivers arrive when *they* are free, cluster at the nearest hub, and queue. The result: drivers burn time waiting, operators burn money on peak tariffs, and cheap renewable energy curtails unused because nobody can shift flexible load toward it. The problem worsens as the fleet grows — our simulated Tokyo year grows from 48 to 180 EVs on the same 11 stations, and naive first-come-first-served dispatch leaves money on the table in every contested window.
+
+Who is affected: **drivers** (waiting instead of driving), **charging operators** (congested hubs, idle outposts, peak-priced energy), and **the grid** (renewables curtailed at noon, peakers fired at dusk).
+
+We optimize the **assignment and scheduling** problem: given live telemetry (position, battery SoC, arrival window) for every EV in a fleet, decide *which station* and *which time slot* each car should charge in, minimizing a weighted sum of grid energy cost, driver travel and driver waiting — while strictly respecting station port capacity. It is a combinatorial QUBO (binary session-start variables `y[v,s,τ]`) at city scale: exactly the class of problem where exact search explodes combinatorially (2^20 schedules on our biggest crunch cell, doubling with every extra car) and where quantum optimization plus amplitude-encoded data channels offer a credible, measurable edge.
+
 ## 🧠 The idea
 
 Every EV ships from the OEM with a **software agent** (registration + GPS + battery SoC tracking — pure software, no hardware retrofit). Agents stream telemetry to a regional coordination hub — **the Center** — which solves the city-scale assignment + scheduling problem for *all* vehicles at once:
@@ -72,6 +80,14 @@ What the 30 matched audit cells showed: the quantum track holds the exact optimu
 
 Qubit count is the price driver of a QPU solve, so Q Grid attacks it on both fronts. The dispatch QUBO shrinks from **504 naive one-hot qubits** (42 cars × 12 slots) to **11–20 plan-compressed qubits** (shipped), and the data side compresses further: a 48-slot Tokyo tariff/solar profile holds 2⁶ = 64 numbers and rides on **6 qubits** via exact state preparation — **47 Ry rotations + 57 CNOTs, fidelity 1.000000** against the target statevector. On the estimation side, **Quantum Amplitude Estimation reaches Monte-Carlo accuracy with 63 oracle calls instead of 4,096 MC samples — a 65× query reduction**. Runnable end to end: `src/amplitude_encoding.py` → `results_year/amplitude_encoding.json`.
 
+## 🧪 Qiskit usage (Qiskit Hack Day)
+
+- **Libraries**: `qiskit` 2.6 (`QuantumCircuit`, `qiskit.circuit.library.StatePreparation`, `qiskit.quantum_info.Statevector`, `qiskit.primitives.StatevectorSampler`). The optimization solvers are NumPy-native for speed; the quantum data channel is cross-validated in native Qiskit.
+- **Circuits created**: a 6-qubit state-preparation circuit encoding a 48-slot Tokyo tariff/solar profile into 64 amplitudes (`StatePreparation`, zero-padded), plus the p=1 QAOA ansatz (RX–RZ mixers on the plan-compressed QUBO) executed as a statevector simulation in `src/amplitude_encoding.py`.
+- **Algorithms implemented**: QAOA (p=1, COBYLA, 8,000 shots) on dispatch QUBOs; Quantum Amplitude Estimation (QPE-based, m=6 control qubits) for renewable-share estimation; exact amplitude-encoded state preparation at the Shende–Bullock–Markov bound (47 Ry + 57 CNOTs for n=6).
+- **Backend / simulator**: statevector simulation (NumPy engine + Qiskit `Statevector` / `StatevectorSampler` primitives). No physical QPU run — stated plainly in `docs/LIMITATIONS.md` #19.
+- **Hybrid interaction**: the classical pipeline (telemetry → AI triage → QUBO build) ships the *crunch cell* — the most contested stations × slots QUBO — to the quantum layer; QAOA's sampled bitstrings are decoded classically into schedules, and the dual-track audit (`results_year/quantum_audit_all.csv`) scores all four solvers on identical instances. The Qiskit bridge (`src/qiskit_bridge.py`) verifies the encoded state at **fidelity 1.000000** and samples it with the Qiskit Sampler (TVD 0.033 at 4,096 shots) → `results_year/qiskit_bridge.json`.
+
 ## 🚀 Quickstart
 
 ```bash
@@ -116,7 +132,30 @@ Q-Grid/
 
 ## 👥 Team
 
-**Q Grid by JustCode, in collaboration with Qub3RAM.team** — built for the *Quantum Optimization for EV Charging Stations* hackathon.
+| | |
+|---|---|
+| **Team name** | JustCode |
+| **Project name** | Q Grid — Quantum Optimization for EV Charging Stations |
+| **Challenge** | Quantum Optimization for EV Charging Stations |
+| **Collaboration** | JustCode × Qub3RAM.team |
+| **Roles** | modeling & QUBO design · solver engineering (classical + quantum) · simulation & audit · privacy layer · docs & demo |
+
+## ✅ Submission checklist (organizer mapping)
+
+| Requirement | Where |
+|---|---|
+| Project & team details | this README (sections above) |
+| Problem statement | `README.md` § Problem statement |
+| Proposed solution | `README.md` § The idea + `docs/architecture.png` |
+| Quantum component (mandatory) | `README.md` § Qubit economics & Qiskit usage; `src/amplitude_encoding.py`, `src/qiskit_bridge.py` |
+| Complete source code | `src/` (4 modules) + `scripts/`-generated artifacts committed under `results*/`, `charts/` |
+| Setup instructions | `README.md` § Quickstart; `requirements.txt` |
+| Qiskit implementation documented | `README.md` § Qiskit usage (Hack Day) |
+| Reproducibility | pinned `SEED = 42`; every table regenerable (`python3 src/qgrid_engine.py`, `src/amplitude_encoding.py`, `src/qiskit_bridge.py`) |
+| Classical baseline comparison | 4-solver stack incl. Greedy FCFS + exact ground truth (`results_year/quantum_audit_all.csv`) |
+| Honest limitations | `docs/LIMITATIONS.md` — 20 limitations, each with fix + proof |
+| Architecture diagram | `docs/architecture.png` |
+| Demo | `dashboard/index.html` (live), `pitch/Q-Grid_Pitch.pptx` (16 slides) |
 
 ---
 
