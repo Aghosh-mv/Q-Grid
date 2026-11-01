@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "system": "Q Grid dual-track year trial",
+    "by": "JustCode × Qub3RAM.team",
+    "classical": "results_year_c1..c3 (days 0..182, qaoa=0)",
+    "quantum": "results_year_c4..c6 (days 183..364, qaoa=1)",
+    "seed": 42,
+    "days": 365
+  },
+  "kpi_year": {
+    "cars_served": 45795,
+    "sessions": 45766,
+    "energy_kwh": 1000759.2,
+    "total_cost_jpy": 44479272.1,
+    "deferred": 2384,
+    "cloud_days": 154,
+    "windows": 1460,
+    "avg_cost_per_session_jpy": 971.9,
+    "wall_clock_s": 990.9,
+    "compression_ratio": 31826.0,
+    "avg_wait_slots": 0.306,
+    "renewable_share_pct_mean": 9.2,
+    "capacity_violations": 0
+  },
+  "audit": {
+    "n_cells": 30,
+    "n_contested": 5,
+    "n_qaoa_optimal": 30,
+    "qaoa_gap_mean": 0.0,
+    "qaoa_gap_max": 0.0,
+    "greedy_gap_max": 38.23,
+    "left_on_table_jpy": 1465.6,
+    "contested_cells": [
+      {
+        "win_id": 66,
+        "day": 17,
+        "qubits": 14,
+        "gap_pct": 0.71,
+        "cost_jpy": 3964.4
+      },
+      {
+        "win_id": 601,
+        "day": 151,
+        "qubits": 11,
+        "gap_pct": 10.73,
+        "cost_jpy": 3332.1
+      },
+      {
+        "win_id": 977,
+        "day": 245,
+        "qubits": 14,
+        "gap_pct": 10.13,
+        "cost_jpy": 5333.0
+      },
+      {
+        "win_id": 982,
+        "day": 246,
+        "qubits": 11,
+        "gap_pct": 38.23,
+        "cost_jpy": 1177.2
+      },
+      {
+        "win_id": 1222,
+        "day": 306,
+        "qubits": 20,
+        "gap_pct": 2.03,
+        "cost_jpy": 4434.0
+      }
+    ],
+    "ensemble_plans_contested": [
+      4.0,
+      1.0,
+      1.0,
+      1.0,
+      4.0
+    ],
+    "qubits_max": 20,
+    "sa_time_contested_s": 0.45,
+    "qaoa_time_contested_s": 96.53,
+    "exact_combos_max_cell": 1048576
+  },
+  "qubit_economics": {
+    "cell": "42 cars x 12 slots",
+    "naive_one_hot_qubits": 504,
+    "plan_compressed_qubits": "11-20",
+    "amplitude_profile_qubits": 6,
+    "amplitude_window_qubits": 4,
+    "qae_vs_mc": {
+      "mc_shots": 10000,
+      "qae_oracle_calls": 400,
+      "reduction_x": 25.0
+    },
+    "exact_bruteforce_combos": 52374249726338269920211035149241586435466272736689036631732661889538140742474792878132321477214466514414186946040961136147476104734166288853256441430016
+  }
+}

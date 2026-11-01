@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "system": "Q Grid amplitude-encoding demo",
+    "by": "JustCode x Qub3RAM.team",
+    "seed": 42,
+    "simulator": "numpy statevector, noiseless"
+  },
+  "profile_48slot": {
+    "qubits": 6,
+    "ry_rotations": 47,
+    "cnots": 57,
+    "cnote": "CNOTs at the Shende-Bullock-Markov optimal bound",
+    "state_dimension": 64,
+    "fidelity": 1.0
+  },
+  "window_12slot": {
+    "qubits": 4,
+    "ry_rotations": 11,
+    "cnots": 11,
+    "cnote": "CNOTs at the Shende-Bullock-Markov optimal bound",
+    "state_dimension": 16,
+    "fidelity": 1.0
+  },
+  "qae_vs_mc": {
+    "year-mean renewable share (9.2%)": {
+      "a_true": 0.092,
+      "qae_rmse": 0.00773,
+      "qae_oracle_calls": 63,
+      "mc_shots_to_match": 4096,
+      "query_reduction_x": 65.0,
+      "sim_seconds": 0.003
+    },
+    "daily max renewable share (21.2%)": {
+      "a_true": 0.212,
+      "qae_rmse": 0.01021,
+      "qae_oracle_calls": 63,
+      "mc_shots_to_match": 4096,
+      "query_reduction_x": 65.0,
+      "sim_seconds": 0.003
+    },
+    "demo midday solar-glut share (74.4%)": {
+      "a_true": 0.744,
+      "qae_rmse": 0.0083,
+      "qae_oracle_calls": 63,
+      "mc_shots_to_match": 4096,
+      "query_reduction_x": 65.0,
+      "sim_seconds": 0.003
+    }
+  },
+  "qubit_economics": {
+    "dispatch_cell": "42 cars x 12 slots (deferred-load crunch cell)",
+    "naive_one_hot_qubits": 504,
+    "plan_compressed_qubits": "11-20 (audit reality, see COMPARISON.md)",
+    "amplitude_profile_qubits": 6,
+    "note": "decision variables stay plan-compressed; amplitude encoding carries the 48-slot data profiles and the uncertainty estimation \u2014 the two places where data volume dominates"
+  }
+}

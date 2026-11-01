@@ -715,36 +715,54 @@ def qaoa_core(Q: np.ndarray, offset: float, n: int, p: int = 1, max_iter: int = 
 
 
 def exact_core_optimum(hot_cars, session_vars, k_of) -> float:
-    """Brute-force ground truth on the crunch cell (hard capacity, true cost)."""
-    keys = [(c.cid, key) for c in hot_cars for key in session_vars[c.cid]]
-    ncv = len(keys)
-    best = np.inf
-    for mask in range(1 << ncv):
-        sess = {c.cid: None for c in hot_cars}
-        for bit, (cid, (sid, tau)) in enumerate(keys):
-            if mask >> bit & 1:
-                if sess[cid] is not None:
-                    sess[cid] = "DUP"
-                    break
-                sess[cid] = (sid, tau)
-        if any(v is None or v == "DUP" for v in sess.values()):
-            continue
-        load = {}
-        cost = 0.0
-        ok = True
-        for c in hot_cars:
-            sid, tau = sess[c.cid]
+    """Brute-force ground truth on the crunch cell (hard capacity, true cost).
+
+    Enumerates the same feasible set as a 2^ncv mask sweep, but exploits the
+    hard exactly-one-session-per-car constraint: DFS over per-car session
+    options with incremental capacity pruning and a best-cost bound. Identical
+    optimum, orders of magnitude faster — this is what keeps the year-scale
+    dual-track audit inside its wall-clock budget.
+    """
+    cars = list(hot_cars)
+    if not cars:
+        return np.inf
+    opts = []  # per car: [(sid, tau, k, cost), ...] sorted by cost (greedy first dive)
+    for c in cars:
+        c_opts = []
+        for (sid, tau) in session_vars[c.cid]:
             k = k_of[(c.cid, sid)]
-            for t in range(tau, tau + k):
+            cost = (billed_energy(c, STATIONS[sid]) * TARIFF[tau]
+                    + km(c.zone, STATIONS[sid].zone) * TRAVEL_RS_PER_KM
+                    + WAIT_RS_PER_SLOT[c.urgency] * (tau - c.arrival))
+            c_opts.append((sid, tau, k, cost))
+        c_opts.sort(key=lambda o: o[3])
+        if not c_opts:
+            return np.inf  # some car has no session option -> infeasible, as before
+        opts.append(c_opts)
+    order = sorted(range(len(cars)), key=lambda i: len(opts[i]))
+    ports = {s: STATIONS[s].ports for s in STATIONS}
+    load = {}
+    best = [np.inf]
+
+    def dfs(idx, acc):
+        if acc >= best[0]:
+            return
+        if idx == len(order):
+            best[0] = acc
+            return
+        i = order[idx]
+        for sid, tau, k, cost in opts[i]:
+            window = range(tau, tau + k)
+            if any(load.get((sid, t), 0) >= ports[sid] for t in window):
+                continue
+            for t in window:
                 load[(sid, t)] = load.get((sid, t), 0) + 1
-            e_bill = billed_energy(c, STATIONS[sid])
-            cost += e_bill * TARIFF[tau] + km(c.zone, STATIONS[sid].zone) * TRAVEL_RS_PER_KM
-            cost += WAIT_RS_PER_SLOT[c.urgency] * (tau - c.arrival)
-        if any(v > STATIONS[s].ports for (s, _), v in load.items()):
-            continue
-        if cost < best:
-            best = cost
-    return float(best)
+            dfs(idx + 1, acc + cost)
+            for t in window:
+                load[(sid, t)] -= 1
+
+    dfs(0, 0.0)
+    return float(best[0])
 
 
 def greedy_core(hot_cars, hot_stations, hot_slots, k_of):
