@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Q Grid — Final Presentation · JustCode × Qub3RAM.team</title>
+<style>
+:root{--bg:#F6F4EF;--card:#FFFFFF;--ink:#161A26;--mut:#5B6272;--ind:#4F46E5;--cy:#0891B2;--gold:#B45309;--ok:#059669;--line:#E7E3D8;--sh:0 24px 70px -18px rgba(23,25,45,.16),0 6px 18px -8px rgba(23,25,45,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;background:
+radial-gradient(1200px 600px at 85% -10%,rgba(79,70,229,.07),transparent 60%),
+radial-gradient(900px 500px at -10% 110%,rgba(8,145,178,.08),transparent 60%),var(--bg);
+color:var(--ink);overflow:hidden}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:52px 72px 76px;opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease}
+.slide.on{display:flex;opacity:1;transform:none}
+.slide::after{content:"";pointer-events:none}
+h1{font-size:64px;letter-spacing:-2.5px;line-height:1.02}
+h2{font-size:38px;letter-spacing:-1.2px;margin-bottom:6px}
+h3{font-size:19px;letter-spacing:-.3px}
+.kick{font-size:12.5px;font-weight:800;letter-spacing:2.6px;text-transform:uppercase;color:var(--ind);margin-bottom:14px}
+.sub{color:var(--mut);font-size:16.5px;line-height:1.55}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--sh);padding:24px 26px}
+.grid{display:grid;gap:18px}
+.row{display:flex;gap:18px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--mut);box-shadow:0 3px 10px -4px rgba(23,25,45,.12)}
+.pill b{color:var(--ink)}
+.grad{background:linear-gradient(92deg,var(--ind),var(--cy));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat{font-size:40px;font-weight:800;letter-spacing:-1.5px}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--mut)}
+a{color:var(--ind);text-decoration:none;border-bottom:1.5px solid rgba(79,70,229,.25)}
+a:hover{border-bottom-color:var(--ind)}
+pre{background:#0F1220;color:#DCE0F2;border-radius:18px;padding:16px 18px;font-size:12.6px;line-height:1.62;overflow:hidden;font-family:'JetBrains Mono','Fira Code',Consolas,monospace}
+pre .c{color:#7C86A8}.pre-k{color:#93C5FD}.pre-s{color:#86EFAC}.pre-f{color:#FCD34D}
+.imgbox{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh);padding:12px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.imgbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:14px}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px}
+th{font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut);text-align:left;padding:10px 14px;border-bottom:1.5px solid var(--line)}
+td{padding:10px 14px;border-bottom:1px solid #F0EDE4}
+.tr{display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-bottom:1px dashed var(--line)}
+.tr:last-child{border-bottom:none}
+.chk{min-width:26px;height:26px;border-radius:9px;background:linear-gradient(135deg,#ECFDF5,#D1FAE5);color:var(--ok);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;margin-top:1px}
+.qa{padding:15px 18px;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:0 8px 24px -12px rgba(23,25,45,.14)}
+.qa .q{font-weight:750;font-size:13.8px;margin-bottom:5px}
+.qa .a{font-size:12.6px;color:var(--mut);line-height:1.5}
+.chip{padding:9px 13px;border-radius:14px;background:#fff;border:1px solid var(--line);font-size:12.2px;font-weight:600;color:#3B4152;box-shadow:0 4px 12px -6px rgba(23,25,45,.1)}
+#bar{position:fixed;left:0;top:0;height:4px;background:linear-gradient(90deg,var(--ind),var(--cy));z-index:99;transition:width .35s ease;border-radius:0 4px 4px 0}
+#hud{position:fixed;right:26px;bottom:20px;font-size:12px;color:var(--mut);background:rgba(255,255,255,.85);border:1px solid var(--line);padding:6px 13px;border-radius:999px;z-index:99;backdrop-filter:blur(6px)}
+.foot{position:fixed;left:30px;bottom:22px;font-size:11.5px;color:#9AA0AE;z-index:99;letter-spacing:.4px}
+.arrow{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);font-size:11.5px;color:#B3B8C4;z-index:99;letter-spacing:.6px}
+.big{font-size:120px;line-height:.95;font-weight:850;letter-spacing:-5px}
+.gh{display:inline-flex;align-items:center;gap:8px;background:#0F1220;color:#fff;padding:10px 18px;border-radius:999px;font-weight:700;font-size:13.5px;border:none}
+.gh:hover{opacity:.88}
+</style></head><body>
+<div id="bar"></div><div class="foot">Q GRID · JustCode × Qub3RAM.team · Qiskit Hack Day</div>
+<div class="arrow">← → keys · click to advance</div><div id="hud">1 / 17</div>
+
+<!-- 1 COVER -->
+<section class="slide on">
+ <div style="margin:auto 0;max-width:1080px">
+  <div class="row" style="gap:10px;margin-bottom:26px">
+   <span class="pill">⚛️ Qiskit Hack Day</span><span class="pill">Tokyo · dual-track year trial</span><span class="pill">seed 42 · fully reproducible</span>
+  </div>
+  <h1>Q <span class="grad">Grid</span></h1>
+  <div style="font-size:23px;color:var(--mut);margin:16px 0 30px;font-weight:500">A hybrid quantum–classical dispatch layer that tells every EV in the city<br><b style="color:var(--ink)">when and where to charge</b> — at the exact optimum, verified.</div>
+  <div class="row" style="gap:14px;flex-wrap:wrap">
+   <a class="gh" href="https://github.com/Aghosh-mv/Q-Grid">ⓘ github.com/Aghosh-mv/Q-Grid</a>
+   <span class="pill">👥 JustCode × <b>Qub3RAM.team</b></span>
+   <span class="pill">📜 Apache-2.0 + addendum</span>
+  </div>
+  <div class="row" style="gap:16px;margin-top:46px">
+   <div><div class="stat grad">30/30</div><div class="lbl">QAOA exact-optimum cells</div></div>
+   <div><div class="stat grad">65×</div><div class="lbl">QAE query reduction</div></div>
+   <div><div class="stat grad">6 q</div><div class="lbl">48-slot profile encoding</div></div>
+   <div><div class="stat grad">0</div><div class="lbl">capacity violations · year</div></div>
+  </div>
+ </div>
+</section>
+
+<!-- 2 PROBLEM -->
+<section class="slide">
+ <div class="kick">02 · Problem statement</div>
+ <h2>Urban EV charging is a congestion problem<br>with a price on every minute.</h2>
+ <div class="grid" style="grid-template-columns:1.5fr 1fr;margin-top:18px">
+  <div class="card sub" style="font-size:15px">
+   <p style="margin-bottom:12px">Tokyo's network is a patchwork of small stations. At midday, <b style="color:var(--ink)">solar glut makes power nearly free</b>; evenings price it at a premium. Yet drivers arrive when <i>they</i> are free, cluster at the nearest hub, and queue — cheap renewables curtail unused while peakers fire at dusk.</p>
+   <p style="margin-bottom:12px">In our simulated Tokyo year the fleet grows <b style="color:var(--ink)">48 → 180 EVs on the same 11 stations</b>, and naive first-come-first-served dispatch leaves money on the table in every contested window — worst case <b style="color:var(--gold)">38.23% above the exact optimum</b>.</p>
+   <p>We optimize <b style="color:var(--ink)">assignment + scheduling</b>: which station, which slot, per car — minimizing grid cost + driver travel + waiting under strict port capacity. A city-scale <b style="color:var(--ink)">QUBO</b>: the class where exact search explodes <b style="color:var(--ind)">2ⁿ</b> and quantum earns its seat.</p>
+  </div>
+  <div class="grid" style="gap:14px">
+   <div class="card"><div class="lbl">Who pays today</div>
+    <div class="tr"><div class="chk">🚗</div><div><b>Drivers</b> — waiting instead of driving</div></div>
+    <div class="tr"><div class="chk">🔌</div><div><b>Operators</b> — congested hubs, peak-priced energy</div></div>
+    <div class="tr"><div class="chk">🌏</div><div><b>The grid</b> — noon solar curtailed, dusk peakers fired</div></div>
+   </div>
+   <div class="card"><div class="lbl">The combinatorial wall</div>
+    <div class="stat" style="font-size:34px">2²⁰ = 1,048,576</div>
+    <div class="sub" style="font-size:13px;margin-top:4px">schedules on one 20-qubit crunch cell — <b>doubles with every extra car</b>.</div></div>
+  </div>
+ </div>
+</section>
+
+<!-- 3 SOLUTION -->
+<section class="slide">
+ <div class="kick">03 · Proposed solution</div>
+ <h2>One software agent per car. One center for the city.<br><span class="grad">Four solvers, one referee.</span></h2>
+ <div class="row" style="margin-top:22px;gap:14px;align-items:stretch">
+  <div class="card" style="flex:1"><div class="lbl">Input →</div><h3 style="margin:6px 0">Telemetry</h3><div class="sub" style="font-size:13px">Position, SoC, arrival window per EV — consent-gated, ward-coarsened, DP-noised.</div></div>
+  <div class="card" style="flex:1.4;border:1.5px solid rgba(79,70,229,.35)"><div class="lbl" style="color:var(--ind)">Processing</div><h3 style="margin:6px 0">AI triage → QUBO</h3><div class="sub" style="font-size:13px">SoC&lt;25% → NOW · &lt;40% → SOON · else CAN-WAIT (₹260/₹150/₹80 per-slot wait weight). Classical pre-filter keeps 2 nearest stations; capacity is <b>slack-encoded as an exact equality</b> — no penalty on empty ports, overfill impossible.</div></div>
+  <div class="card" style="flex:1"><div class="lbl">→ Output</div><h3 style="margin:6px 0">Final schedule</h3><div class="sub" style="font-size:13px">One continuous session per car, capacity-safe by construction. Deferred-load queue absorbs overflow.</div></div>
+ </div>
+ <div class="card" style="margin-top:18px">
+  <table><tr><th>Solver</th><th>Role</th><th>Scope</th></tr>
+  <tr><td><b>Greedy FCFS</b></td><td>baseline — what operators run today</td><td>full grid</td></tr>
+  <tr><td><b>Simulated Annealing</b></td><td>production path · 400k iters</td><td>full grid (344 QUBO binaries)</td></tr>
+  <tr><td><b style="color:var(--ind)">QAOA p=1</b> (COBYLA, 8k shots)</td><td style="color:var(--ind)"><b>quantum attack on the crunch cell</b> — most contested stations × slots</td><td>20-qubit subproblem</td></tr>
+  <tr><td><b>Exact brute force</b></td><td>referee — ground truth</td><td>crunch cell (2²⁰)</td></tr></table>
+ </div>
+</section>
+
+<!-- 4 ARCHITECTURE -->
+<section class="slide">
+ <div class="kick">04 · Architecture</div>
+ <h2>Classical pipes, quantum punches.</h2>
+ <div class="imgbox" style="flex:1;margin-top:16px"><img src="docs/architecture.png" alt="Q Grid architecture"></div>
+ <div class="row" style="gap:10px;margin-top:14px">
+  <span class="pill">OEM software agent — <b>no hardware retrofit</b></span><span class="pill">ward-level DP telemetry</span><span class="pill">hierarchical crunch-cell detection</span><span class="pill">deferred-load queue</span></div>
+</section>
+
+<!-- 5 QUANTUM COMPONENT -->
+<section class="slide">
+ <div class="kick">05 · Quantum component (mandatory)</div>
+ <h2>QAOA on the crunch cell + <span class="grad">amplitude encoding + QAE</span></h2>
+ <div class="grid" style="grid-template-columns:1fr 1fr 1fr;margin-top:18px">
+  <div class="card"><div class="lbl">1 · QAOA p=1</div>
+   <div class="sub" style="font-size:13px;margin-top:8px"><b style="color:var(--ink)">Mapping:</b> session-start binaries y[v,s,τ] → Ising Hamiltonian; cost layer = QUBO, mixer = RX ring.<br><b style="color:var(--ink)">Why:</b> combinatorial constrained dispatch is QAOA's home turf; p=1 + COBYLA certifies against brute force.<br><b style="color:var(--ink)">Achieves:</b> exact optimum on <b class="grad" style="font-size:17px">30/30</b> audit cells.</div></div>
+  <div class="card" style="border:1.5px solid rgba(180,83,9,.3)"><div class="lbl" style="color:var(--gold)">2 · Amplitude encoding</div>
+   <div class="sub" style="font-size:13px;margin-top:8px">A 48-slot Tokyo tariff/solar profile = 64 amplitudes = <b style="color:var(--ink)">6 qubits</b> (naive: 48 wires). Exact prep at the Shende–Bullock–Markov bound: <b style="color:var(--ink)">47 Ry + 57 CNOTs, fidelity 1.000000</b>. Zero-padding 48→64 costs nothing.</div></div>
+  <div class="card"><div class="lbl">3 · Quantum Amplitude Estimation</div>
+   <div class="sub" style="font-size:13px;margin-top:8px">QPE-based QAE (m=6 control) estimates renewable coverage at MC accuracy with <b style="color:var(--ink)">63 oracle calls vs 4,096 MC samples</b> — <b class="grad" style="font-size:17px">65× query reduction</b>, measured at three anchors.</div></div>
+ </div>
+ <div class="card" style="margin-top:16px"><div class="sub" style="font-size:13.5px">⚖️ <b>The honest ledger:</b> amplitude encoding compresses <i>data</i>, not decision variables — the QUBO stays plan-compressed at 11–20 qubits. Three levers, each labeled: <b>504 naive → 11–20 plan-compressed → 6 data qubits</b>. Not "the whole problem fits in 6."</div></div>
+</section>
+
+<!-- 6 QISKIT -->
+<section class="slide">
+ <div class="kick">06 · Qiskit usage</div>
+ <h2>Native Qiskit 2.6, cross-validated.</h2>
+ <div class="grid" style="grid-template-columns:1.15fr 1fr;margin-top:16px">
+  <div class="card"><div class="lbl">src/qiskit_bridge.py — runs in 2 s</div>
+<pre><span class="c"># the same 6-qubit Tokyo profile, rebuilt in Qiskit</span>
+<span class="pre-k">from</span> qiskit.circuit.library <span class="pre-k">import</span> StatePreparation
+<span class="pre-k">from</span> qiskit.quantum_info <span class="pre-k">import</span> Statevector
+<span class="pre-k">from</span> qiskit.primitives <span class="pre-k">import</span> StatevectorSampler
+
+qc = QuantumCircuit(<span class="pre-f">6</span>)
+qc.append(StatePreparation(amps), <span class="pre-f">range</span>(<span class="pre-f">6</span>))
+fid = <span class="pre-f">abs</span>(np.vdot(amps, Statevector(qc).data))**<span class="pre-f">2</span>
+shots = StatevectorSampler(seed=<span class="pre-f">42</span>).run([qc]).result()</pre>
+   <div class="row" style="gap:10px;margin-top:12px"><span class="pill">fidelity <b>1.000000</b></span><span class="pill">4,096-shot TVD <b>0.033</b></span><span class="pill">qiskit <b>2.6.1</b></span></div></div>
+  <div class="grid" style="gap:14px">
+   <div class="card"><div class="lbl">Libraries & algorithms</div>
+    <div class="sub" style="font-size:13px;line-height:1.8"><b>QuantumCircuit</b> · <b>StatePreparation</b> · <b>Statevector</b> · <b>StatevectorSampler</b><br>QAOA (p=1, COBYLA, 8k shots) · QPE-based QAE (m=6) · exact state prep (SBM bound)</div></div>
+   <div class="card"><div class="lbl">Hybrid loop</div>
+    <div class="sub" style="font-size:13px">Classical pipeline builds the QUBO → ships the <b>crunch cell</b> to QAOA → sampled bitstrings decoded to schedules → <b>30-cell audit</b> scores all four solvers on identical instances.</div></div>
+   <div class="card"><div class="lbl">Backend — stated plainly</div>
+    <div class="sub" style="font-size:13px">Statevector simulation (NumPy + Qiskit primitives). No physical QPU run — <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/docs/LIMITATIONS.md">documented as limitation #19</a>, not hidden.</div></div>
+  </div>
+ </div>
+</section>
+
+<!-- 7 DEEP KNOWLEDGE / QUBO -->
+<section class="slide">
+ <div class="kick">07 · Deep knowledge — the QUBO</div>
+ <h2>Slack-encoded capacity: the detail that<br><span class="grad">makes annealing actually work.</span></h2>
+ <div class="grid" style="grid-template-columns:1.2fr 1fr;margin-top:18px">
+  <div class="card"><pre style="font-size:13.5px">min  Σ_v,s,τ  y[v,s,τ]·( E(v,s)·tariff(τ)
+              + 9·dist(v,s) + w(v)·(τ − arr_v) )
+s.t.  Σ_s,τ  y[v,s,τ] = 1            <span class="c"># each car charges once</span>
+      Σ_v x[v,s,τ] + u[s,τ] = ports(s)  <span class="c"># EXACT equality</span></pre>
+   <div class="sub" style="font-size:13.5px;margin-top:12px">The slack binaries <b>u</b> (one per free port) turn the capacity inequality into an <b>exact equality</b> — so no penalty is ever applied to <i>empty</i> ports, and the solver can never overfill a station. This is why the entire simulated year closed with <b class="grad" style="font-size:16px">0 capacity violations</b>.</div></div>
+  <div class="grid" style="gap:14px">
+   <div class="card"><div class="lbl">Why this encoding</div><div class="sub" style="font-size:13px">Penalty-based soft constraints trade violation risk for hyperparameter tuning. Slack encoding removes the tuning and makes feasibility structural.</div></div>
+   <div class="card"><div class="lbl">Crunch-cell detection</div><div class="sub" style="font-size:13px">Contention-scoring auto-picks the most contested stations × slots (e.g. Koramangala Hub + Indiranagar Point, 12:00–12:30, 4 lowest-SoC cars) — quantum effort goes where it pays.</div></div>
+   <div class="card"><div class="lbl">Three quantum bugs we fixed</div><div class="sub" style="font-size:12.5px">① bitmask leak → full higher-bit context ② S₀ in wrong basis → Q=−I, all estimates 1.0 ③ L1 vs L2 — fidelity 0.045 = ‖p‖² was the clue. <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/docs/LEARNINGS.md">Full log →</a></div></div>
+  </div>
+ </div>
+</section>
+
+<!-- 8 YEAR RESULTS -->
+<section class="slide">
+ <div class="kick">08 · Dual-track year trial — results</div>
+ <h2>One Tokyo year, run twice. <span class="grad">16 minutes.</span></h2>
+ <div class="row" style="gap:14px;margin-top:16px">
+  <div class="card" style="flex:1;text-align:center"><div class="stat grad">991 s</div><div class="lbl">365 days · 31,826× compression</div></div>
+  <div class="card" style="flex:1;text-align:center"><div class="stat">45,766</div><div class="lbl">charging sessions</div></div>
+  <div class="card" style="flex:1;text-align:center"><div class="stat">1.0 GWh</div><div class="lbl">1,000,759 kWh delivered</div></div>
+  <div class="card" style="flex:1;text-align:center"><div class="stat">¥44.5M</div><div class="lbl">grid cost · JPY ToU</div></div>
+  <div class="card" style="flex:1;text-align:center;border:1.5px solid rgba(5,150,105,.35)"><div class="stat" style="color:var(--ok)">0</div><div class="lbl">capacity violations</div></div>
+ </div>
+ <div class="grid" style="grid-template-columns:1.5fr 1fr;margin-top:16px;flex:1">
+  <div class="imgbox"><img src="results_year/charts_year/year_curves.png" alt="year curves"></div>
+  <div class="card"><div class="lbl">Two tracks, one referee</div>
+   <table style="margin-top:6px">
+    <tr><th>Track</th><th>Days</th><th>QAOA</th></tr>
+    <tr><td>Classical c1–c3</td><td>0–182</td><td>off</td></tr>
+    <tr><td><b style="color:var(--ind)">Quantum c4–c6</b></td><td>183–364</td><td style="color:var(--ind)"><b>on</b></td></tr>
+   </table>
+   <div class="sub" style="font-size:12.8px;margin-top:10px">Raw cross-track totals are confounded by fleet growth — so <b>all headline claims come from 30 matched audit cells</b>, identical QUBOs, exact ground truth. <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/results_year/COMPARISON.md">COMPARISON.md →</a></div></div>
+ </div>
+</section>
+
+<!-- 9 AUDIT -->
+<section class="slide">
+ <div class="kick">09 · The fair-comparison instrument</div>
+ <h2>30 matched cells. <span class="grad">QAOA: 30/30 exact optimum.</span></h2>
+ <div class="grid" style="grid-template-columns:1.4fr 1fr;margin-top:16px;flex:1">
+  <div class="imgbox"><img src="results_year/charts_year/audit_gaps.png" alt="audit gaps"></div>
+  <div class="grid" style="gap:14px">
+   <div class="card" style="border:1.5px solid rgba(79,70,229,.35)"><div class="stat grad" style="font-size:34px">38.23%</div><div class="sub" style="font-size:13px">worst classical gap above optimum — window 982, day 246, 11 qubits. Recurring per-window money, not a year-total spin (audit covers ~2% of 1,460 windows — <b>caveat printed with the number</b>).</div></div>
+   <div class="card"><div class="lbl">Method</div><div class="sub" style="font-size:13px">5 cells per chunk × 6 chunks, stratified. All four solvers attack the <b>identical QUBO</b>; brute force (2²⁰ = 1,048,576 combos) is the referee. Every row: <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/results_year/quantum_audit_all.csv">quantum_audit_all.csv →</a></div></div>
+  </div>
+ </div>
+</section>
+
+<!-- 10 QUBIT ECONOMICS -->
+<section class="slide">
+ <div class="kick">10 · Qubit economics</div>
+ <h2>The price of a QPU solve is qubits. <span class="grad">We cut it 84×.</span></h2>
+ <div class="row" style="gap:16px;margin-top:22px;align-items:center">
+  <div class="card" style="flex:1;text-align:center"><div class="stat" style="color:#B9BECB;text-decoration:line-through">504</div><div class="lbl">naive one-hot (42 cars × 12 slots)</div></div>
+  <div style="font-size:30px;color:#B9BECB">→</div>
+  <div class="card" style="flex:1;text-align:center"><div class="stat">11–20</div><div class="lbl">plan-compressed QUBO (shipped)</div></div>
+  <div style="font-size:30px;color:#B9BECB">→</div>
+  <div class="card" style="flex:1;text-align:center;border:1.5px solid rgba(180,83,9,.35)"><div class="stat" style="color:var(--gold)">6</div><div class="lbl">amplitude-encoded 48-slot profile</div></div>
+ </div>
+ <div class="grid" style="grid-template-columns:1.4fr 1fr;margin-top:18px;flex:1">
+  <div class="imgbox"><img src="results_year/charts_year/qubit_economics.png" alt="qubit economics"></div>
+  <div class="card"><div class="lbl">Simulator tax — on the record</div>
+   <div class="sub" style="font-size:13.2px">On a laptop statevector sim, contested cells: SA <b>0.45 s</b> vs QAOA <b>96.53 s</b>. But exact certification of the biggest cell already needs <b>2²⁰</b> enumerations and doubles per car — while QAOA scales polynomially. Quality today, scale tomorrow. <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/results_year/COMPARISON.md">Numbers →</a></div></div>
+ </div>
+</section>
+
+<!-- 11 AMPLITUDE + QAE -->
+<section class="slide">
+ <div class="kick">11 · Amplitude encoding & QAE — measured</div>
+ <h2>63 oracle calls ≈ 4,096 Monte-Carlo samples.</h2>
+ <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:16px">
+  <div class="card"><div class="lbl">src/amplitude_encoding.py — exact state prep</div>
+<pre><span class="c"># Givens-disentangling prep, Shende–Bullock–Markov bound</span>
+rotations.append((j, x >> (j + <span class="pre-f">1</span>), theta))   <span class="c"># full context</span>
+day_profile /= np.linalg.norm(day_profile)      <span class="c"># L2 = a state</span>
+amps = np.zeros(<span class="pre-f">64</span>); amps[:<span class="pre-f">48</span>] = profile       <span class="c"># zero-pad</span>
+
+<span class="c"># → 47 Ry + 57 CNOTs, fidelity 1.000000</span></pre></div>
+  <div class="card"><div class="lbl">QAE vs MC — three anchors, 40 trials each</div>
+   <table style="margin-top:4px">
+    <tr><th>Quantity</th><th>True</th><th>QAE RMSE</th><th>Oracle calls</th></tr>
+    <tr><td>year-mean renewable</td><td>9.2%</td><td>0.0077</td><td><b>63</b></td></tr>
+    <tr><td>daily-max renewable</td><td>21.2%</td><td>0.0102</td><td><b>63</b></td></tr>
+    <tr><td>midday solar-glut</td><td>74.4%</td><td>0.0083</td><td><b>63</b></td></tr>
+   </table>
+   <div class="sub" style="font-size:12.8px;margin-top:8px">MC needs 4,096 samples to match → <b class="grad" style="font-size:15px">65× query reduction</b>. JSON: <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/results_year/amplitude_encoding.json">amplitude_encoding.json →</a></div></div>
+ </div>
+ <div class="card" style="margin-top:14px"><div class="sub" style="font-size:13px">🔬 <b>Bug-driven confidence:</b> three quantum bugs (bitmask leak, S₀-basis, L1/L2) each produced a <i>precisely wrong</i> signature — we hand-traced n=2 to catch gate leakage and read fidelity 0.045 = ‖p‖² as the normalization clue. The fixed module now agrees with native Qiskit (<span style="color:var(--ind)">fidelity 1.0</span>).</div></div>
+</section>
+
+<!-- 12 PRIVACY -->
+<section class="slide">
+ <div class="kick">12 · Privacy — track cars without stealing them</div>
+ <h2>Five layers, in the order a driver experiences them.</h2>
+ <div class="grid" style="grid-template-columns:1.25fr 1fr;margin-top:16px;flex:1">
+  <div class="card">
+   <div class="tr"><div class="chk">1</div><div><b>Consent ledger</b> — nothing flows without explicit opt-in at registration</div></div>
+   <div class="tr"><div class="chk">2</div><div><b>Ward coarsening</b> — location coarsened to ward level before leaving the car</div></div>
+   <div class="tr"><div class="chk">3</div><div><b>Rotating pseudonyms</b> — trajectories cannot be stitched back together</div></div>
+   <div class="tr"><div class="chk">4</div><div><b>Differential privacy</b> — Laplace noise, ε=2 measured: <b>0.69% fleet error</b></div></div>
+   <div class="tr"><div class="chk">5</div><div><b>Secure aggregation</b> — the Center sees fleet totals only; exact-sum r = −0.04</div></div>
+   <div class="sub" style="font-size:12.5px;margin-top:10px">Live benchmark: <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/results_year/privacy_audit.json">privacy_audit.json →</a> · code: <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/src/privacy_layer.py">src/privacy_layer.py →</a></div></div>
+  <div class="imgbox"><img src="results_year/charts_year/privacy_utility.png" alt="privacy utility"></div>
+ </div>
+</section>
+
+<!-- 13 SIM GALLERY -->
+<section class="slide">
+ <div class="kick">13 · Simulation gallery — every figure generated, not drawn</div>
+ <h2>Proof, not promises.</h2>
+ <div class="row" style="margin-top:16px;flex:1;gap:16px">
+  <div class="imgbox" style="flex:1"><img src="charts/gantt_schedule.png" alt="gantt"></div>
+  <div class="imgbox" style="flex:1"><img src="charts/qaoa_convergence.png" alt="qaoa convergence"></div>
+  <div class="imgbox" style="flex:1"><img src="charts/solver_comparison.png" alt="solver comparison"></div>
+ </div>
+ <div class="row" style="gap:10px;margin-top:14px">
+  <span class="pill">Gantt — one session per car</span><span class="pill">QAOA convergence — p=1, COBYLA</span><span class="pill">4-solver comparison vs exact</span><span class="pill">demo: wait <b>−21.3%</b> vs FCFS · midday renewable <b>74.4%</b></span></div>
+</section>
+
+<!-- 14 LIMITATIONS -->
+<section class="slide">
+ <div class="kick">14 · Twenty limitations — each with a fix and a proof</div>
+ <h2>We publish our gaps <span class="grad">on purpose.</span></h2>
+ <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px">
+  <span class="chip">1 · QPU = simulator (no NISQ noise)</span><span class="chip">2 · laptop QAOA slower than SA</span><span class="chip">3 · 20-qubit exact ceiling</span><span class="chip">4 · synthetic demand</span>
+  <span class="chip">5 · telemetry privacy → 5-layer fix</span><span class="chip">6 · supply uncertainty simplified</span><span class="chip">7 · no V2G yet (one QUBO term away)</span><span class="chip">8 · Tokyo-only calibration</span>
+  <span class="chip">9 · no transformer load-flow</span><span class="chip">10 · human no-shows → deferred queue</span><span class="chip">11 · amp-enc = data, not variables</span><span class="chip">12 · QPE depth → AQAE on roadmap</span>
+  <span class="chip">13 · 48→64 zero-padding quantified</span><span class="chip">14 · single seed (42, pinned)</span><span class="chip">15 · static ToU → tariff = data input</span><span class="chip">16 · audit = 2% of windows</span>
+  <span class="chip">17 · QAOA p=1 (already 30/30)</span><span class="chip">18 · fleet-growth confound → audit</span><span class="chip">19 · no physical QPU run</span><span class="chip">20 · residual wait 0.306 slots</span>
+ </div>
+ <div class="card" style="margin-top:16px"><div class="sub" style="font-size:13.5px">Every one has <b>The limit / Why it matters / The fix / PROOF</b> pointing at committed code or data — the page cannot drift from reality because reality is committed next to it.<br>👉 <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/docs/LIMITATIONS.md">docs/LIMITATIONS.md</a> — and 8 judge counter-answers: <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/docs/COUNTER_ANSWERS.md">docs/COUNTER_ANSWERS.md</a></div></div>
+</section>
+
+<!-- 15 COUNTER ANSWERS -->
+<section class="slide">
+ <div class="kick">15 · The eight questions judges push hardest</div>
+ <h2>Counter-answers, with numbers.</h2>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
+  <div class="qa"><div class="q">"QAOA is slower than SA — why quantum?"</div><div class="a">Quality, not time: 30/30 exact optima vs classical gaps to 38.23%. The 96 s is simulator tax; exact certification doubles per car, QAOA doesn't.</div></div>
+  <div class="qa"><div class="q">"Why not just run the exact solver?"</div><div class="a">We do — as referee, not engine. 2²⁰ per crunch cell; city-wide (180 EVs) is infeasible. Layered pipeline: FCFS+SA carry load, QAOA hits contested cells.</div></div>
+  <div class="qa"><div class="q">"Isn't the data synthetic?"</div><div class="a">Yes — labeled everywhere. Calibrated: Japanese EV params, Tokyo wards, ToU + tsuyu, 48→180 EVs. Synthesis = full year reproducible in 991 s by any judge.</div></div>
+  <div class="qa"><div class="q">"How do you avoid stealing driver data?"</div><div class="a">Consent ledger → ward coarsening → rotating pseudonyms → DP (ε=2, 0.69% fleet err) → secure aggregation. Audited live in privacy_audit.json.</div></div>
+  <div class="qa"><div class="q">"What does amplitude encoding buy?"</div><div class="a">48-slot profile: 48 wires → 6 qubits, fidelity 1.0. Stacked: 504 → 20 → 6. QAE: 65× fewer queries. Caveat stated: O(2ⁿ) prep gates.</div></div>
+  <div class="qa"><div class="q">"How do I know the year results are real?"</div><div class="a">Six chunked runs, one seed, one aggregator that regenerates every KPI/chart from raw chunks. 991 s re-runnable. Commit history shows each chunk landing.</div></div>
+  <div class="qa"><div class="q">"What if the fleet doubles tomorrow?"</div><div class="a">Size tracks contention, not fleet count: cells stay 11–20 qubits, data stays 6. More chunks, not a redesign — proven by 48→180 in-year.</div></div>
+  <div class="qa"><div class="q">"What is NOT solved?"</div><div class="a">NISQ noise, V2G (one QUBO term), transformer physics. All in LIMITATIONS.md. Measured 38.23% gap + public to-do beats a demo that hides both.</div></div>
+ </div>
+</section>
+
+<!-- 16 REPRODUCE -->
+<section class="slide">
+ <div class="kick">16 · Reproduce it yourself — in 2 minutes</div>
+ <h2>Every number re-derivable. <span class="grad">Nothing to believe.</span></h2>
+ <div class="grid" style="grid-template-columns:1.1fr 1fr;margin-top:16px">
+  <div class="card"><pre><span class="c"># clone & run the demo (seed 42, fully deterministic)</span>
+git clone https://github.com/Aghosh-mv/Q-Grid.git
+pip install -r requirements.txt
+python3 src/qgrid_engine.py         <span class="c"># → results/, charts/</span>
+python3 src/amplitude_encoding.py   <span class="c"># → 65× QAE proof</span>
+python3 src/qiskit_bridge.py        <span class="c"># → Qiskit cross-check</span>
+python3 src/privacy_layer.py        <span class="c"># → privacy audit</span>
+<span class="c"># year trial: python3 src/qgrid_year.py (chunks c1–c6)</span></pre></div>
+  <div class="card"><div class="lbl">Everything, linked</div>
+   <div class="sub" style="font-size:13.3px;line-height:2.05">
+    📖 <a href="https://github.com/Aghosh-mv/Q-Grid#readme">README — submission checklist mapping</a><br>
+    📊 <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/results_year/COMPARISON.md">Year dual-track report + audit</a><br>
+    ⚛️ <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/results_year/amplitude_encoding.json">Amplitude encoding & QAE JSON</a><br>
+    🛡️ <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/results_year/privacy_audit.json">Privacy audit (live)</a><br>
+    🧾 <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/docs/LEARNINGS.md">Engineering log — 6 sections</a><br>
+    🖥️ <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/dashboard/index.html">Live demo dashboard</a><br>
+    🎞️ <a href="https://github.com/Aghosh-mv/Q-Grid/blob/main/pitch/Q-Grid_Pitch.pptx">16-slide pitch deck</a></div></div>
+ </div>
+</section>
+
+<!-- 17 CLOSE -->
+<section class="slide">
+ <div style="margin:auto 0;text-align:center;max-width:1000px">
+  <div class="kick" style="justify-content:center">17 · Thank you</div>
+  <h1 style="font-size:76px">Charge at the <span class="grad">optimum</span>.</h1>
+  <div class="sub" style="font-size:19px;margin:22px auto 34px;max-width:760px">A working, honest, dual-track quantum prototype — verified by an exact referee, compressed to 6 data qubits, privacy-first, and reproducible in 16 minutes on a laptop.</div>
+  <div class="row" style="justify-content:center;gap:14px">
+   <a class="gh" href="https://github.com/Aghosh-mv/Q-Grid">ⓘ github.com/Aghosh-mv/Q-Grid</a>
+   <span class="pill">👥 JustCode × <b>Qub3RAM.team</b></span>
+   <span class="pill">⚛️ Qiskit 2.6</span>
+   <span class="pill">🌱 Apache-2.0 + addendum</span>
+  </div>
+ </div>
+</section>
+
+<script>
+const S=[...document.querySelectorAll('.slide')];let i=0;
+const bar=document.getElementById('bar'),hud=document.getElementById('hud');
+function go(n){i=Math.max(0,Math.min(S.length-1,n));S.forEach((s,k)=>s.classList.toggle('on',k===i));
+ bar.style.width=((i+1)/S.length*100)+'%';hud.textContent=(i+1)+' / '+S.length;}
+go(0);
+addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))go(i+1);
+ if(['ArrowLeft','PageUp'].includes(e.key))go(i-1);if(e.key==='Home')go(0);if(e.key==='End')go(S.length-1);});
+addEventListener('click',e=>{if(e.target.closest('a'))return;go(i+(e.clientX>innerWidth/2?1:-1));});
+</script></body></html>
