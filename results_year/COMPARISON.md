@@ -25,7 +25,7 @@ Same dispatch cell (42 cars x 12 slots):
 | plan-compressed QUBO (shipped) | 11-20 |
 | amplitude-encoded 48-slot profiles | 6 |
 
-A 48-slot tariff/solar profile fits in 6 qubits (log2), and Quantum Amplitude Estimation reaches the same error as 10,000 Monte-Carlo samples with ~400 oracle calls — a 25.0× query reduction. Fewer qubits + fewer queries = **cheaper QPU minutes per solve**, which is exactly what a charging operator bills.
+A 48-slot tariff/solar profile fits in 6 qubits (log2), and Quantum Amplitude Estimation reaches the same error as 4,096 Monte-Carlo samples with ~63 oracle calls — a 65.0× query reduction. Fewer qubits + fewer queries = **cheaper QPU minutes per solve**, which is exactly what a charging operator bills.
 
 ## Track KPIs (year total, both halves)
 - sessions served: **45,766** · energy **1,000,759 kWh** · grid cost **¥44,479,272** (¥972/session)

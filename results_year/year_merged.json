@@ -86,9 +86,9 @@
     "amplitude_profile_qubits": 6,
     "amplitude_window_qubits": 4,
     "qae_vs_mc": {
-      "mc_shots": 10000,
-      "qae_oracle_calls": 400,
-      "reduction_x": 25.0
+      "mc_shots": 4096,
+      "qae_oracle_calls": 63,
+      "reduction_x": 65.0
     },
     "exact_bruteforce_combos": 52374249726338269920211035149241586435466272736689036631732661889538140742474792878132321477214466514414186946040961136147476104734166288853256441430016
   }
