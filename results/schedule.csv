@@ -1,0 +1,16 @@
+car_id,vehicle,home_zone,urgency,station,start_slot,start_time,slots,kwh,wait_slots
+0,Tata Nexon EV,Koramangala,NOW,Koramangala Hub,2,13:00,2,25.5,0
+1,MG ZS EV,Indiranagar,SOON,Koramangala Hub,4,14:00,2,25.1,3
+2,Tata Tiago EV,HSR Layout,NOW,Koramangala Hub,0,12:00,1,17.3,0
+3,Mahindra XUV400,Whitefield,CAN-WAIT,Whitefield Mega,2,13:00,1,17.3,0
+4,BYD e6,Electronic City,SOON,E-City Charge,3,13:30,2,38.0,0
+5,Tata Punch EV,Jayanagar,SOON,Indiranagar Point,0,12:00,1,13.8,0
+6,Hyundai Kona,Marathahalli,NOW,Indiranagar Point,3,13:30,2,27.4,0
+7,MG Comet,BTM Layout,CAN-WAIT,Koramangala Hub,1,12:30,1,7.8,1
+8,Tata Tigor EV,Yeshwanthpur,NOW,Hebbal Rapid,2,13:00,1,16.9,0
+9,Kia EV6,Hebbal,SOON,Indiranagar Point,5,14:30,2,32.5,1
+10,Citroen eC3,Electronic City,NOW,E-City Charge,6,15:00,1,17.8,0
+11,Tata Nexon EV,Indiranagar,CAN-WAIT,Indiranagar Point,1,12:30,1,17.0,0
+12,Mahindra BE 6,Whitefield,SOON,Indiranagar Point,8,16:00,2,41.1,0
+13,MG Windsor,Koramangala,SOON,Koramangala Hub,6,15:00,2,31.2,4
+14,Hyundai Creta EV,HSR Layout,CAN-WAIT,Indiranagar Point,2,13:00,1,23.6,2

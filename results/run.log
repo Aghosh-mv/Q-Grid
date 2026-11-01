@@ -1,0 +1,74 @@
+============================================================================
+ Q GRID — Quantum Optimization for EV Charging Stations
+ Q Grid by JustCode  x  Qub3RAM.team
+============================================================================
+
+[1] TELEMETRY — 15 car agents reporting to the Center:
+    AGENT-00 | Tata Nexon EV     | Koramangala     | SoC 22.0% -> 85% | needs  25.5 kWh | arrival 13:00 | NOW
+    AGENT-01 | MG ZS EV          | Indiranagar     | SoC 35.0% -> 85% | needs  25.1 kWh | arrival 12:30 | SOON
+    AGENT-02 | Tata Tiago EV     | HSR Layout      | SoC 18.0% -> 90% | needs  17.3 kWh | arrival 12:00 | NOW
+    AGENT-03 | Mahindra XUV400   | Whitefield      | SoC 41.0% -> 85% | needs  17.3 kWh | arrival 13:00 | CAN-WAIT
+    AGENT-04 | BYD e6            | Electronic City | SoC 27.0% -> 80% | needs  38.0 kWh | arrival 13:30 | SOON
+    AGENT-05 | Tata Punch EV     | Jayanagar       | SoC 30.0% -> 85% | needs  13.8 kWh | arrival 12:00 | SOON
+    AGENT-06 | Hyundai Kona      | Marathahalli    | SoC 15.0% -> 85% | needs  27.4 kWh | arrival 13:30 | NOW
+    AGENT-07 | MG Comet          | BTM Layout      | SoC 45.0% -> 90% | needs   7.8 kWh | arrival 12:00 | CAN-WAIT
+    AGENT-08 | Tata Tigor EV     | Yeshwanthpur    | SoC 20.0% -> 85% | needs  16.9 kWh | arrival 13:00 | NOW
+    AGENT-09 | Kia EV6           | Hebbal          | SoC 38.0% -> 80% | needs  32.5 kWh | arrival 14:00 | SOON
+    AGENT-10 | Citroen eC3       | Electronic City | SoC 24.0% -> 85% | needs  17.8 kWh | arrival 15:00 | NOW
+    AGENT-11 | Tata Nexon EV     | Indiranagar     | SoC 48.0% -> 90% | needs  17.0 kWh | arrival 12:30 | CAN-WAIT
+    AGENT-12 | Mahindra BE 6     | Whitefield      | SoC 33.0% -> 85% | needs  41.1 kWh | arrival 16:00 | SOON
+    AGENT-13 | MG Windsor        | Koramangala     | SoC 26.0% -> 85% | needs  31.2 kWh | arrival 13:00 | SOON
+    AGENT-14 | Hyundai Creta EV  | HSR Layout      | SoC 44.0% -> 90% | needs  23.6 kWh | arrival 12:00 | CAN-WAIT
+
+[2] AI TRIAGE + PRE-FILTER (classical preprocessing):
+    NOW       car #00: candidates -> Koramangala Hub (2 slots), Indiranagar Point (2 slots)
+    SOON      car #01: candidates -> Indiranagar Point (2 slots), Koramangala Hub (2 slots)
+    NOW       car #02: candidates -> Koramangala Hub (1 slots), Indiranagar Point (1 slots)
+    CAN-WAIT  car #03: candidates -> Whitefield Mega (1 slots), Indiranagar Point (1 slots)
+    SOON      car #04: candidates -> E-City Charge (2 slots), Koramangala Hub (2 slots)
+    SOON      car #05: candidates -> Koramangala Hub (1 slots), Indiranagar Point (1 slots)
+    NOW       car #06: candidates -> Whitefield Mega (1 slots), Indiranagar Point (2 slots)
+    CAN-WAIT  car #07: candidates -> Koramangala Hub (1 slots), Indiranagar Point (1 slots)
+    NOW       car #08: candidates -> Hebbal Rapid (1 slots), Indiranagar Point (1 slots)
+    SOON      car #09: candidates -> Hebbal Rapid (1 slots), Indiranagar Point (2 slots)
+    NOW       car #10: candidates -> E-City Charge (1 slots), Koramangala Hub (1 slots)
+    CAN-WAIT  car #11: candidates -> Indiranagar Point (1 slots), Koramangala Hub (1 slots)
+    SOON      car #12: candidates -> Whitefield Mega (1 slots), Indiranagar Point (2 slots)
+    SOON      car #13: candidates -> Koramangala Hub (2 slots), Indiranagar Point (2 slots)
+    CAN-WAIT  car #14: candidates -> Koramangala Hub (1 slots), Indiranagar Point (1 slots)
+
+[3a] GREEDY FCFS baseline: cost 4,206 Rs | avg wait 0.93 slots | 0.1 ms
+
+[3b] QUBO (full grid) — building...
+    QUBO: 344 binaries | matrix (344, 344) | nnz 4839
+    Simulated annealing (400k iterations)...
+    SA: cost 4,180 Rs | avg wait 0.73 slots | violations 0 | 2.03s
+
+[3c] QAOA (statevector, COBYLA) on the crunch cell...
+    Crunch cell: stations ['Koramangala Hub', 'Indiranagar Point'], start slots ['12:00', '12:30'], cars [2, 5, 1, 14]
+    Core QUBO: 20 qubits
+    QAOA: 628 Rs | exact optimum 619 Rs | approx ratio 1.015 | feasible(top-200) 17% | greedy cell 698.1
+
+[4] FINAL SCHEDULE (production path = Simulated Annealing):
+    car #02 Tata Tiago EV     -> Koramangala Hub   @ 12:00 for 1 slot(s) (17.3 kWh, wait 0)
+    car #05 Tata Punch EV     -> Indiranagar Point @ 12:00 for 1 slot(s) (13.8 kWh, wait 0)
+    car #07 MG Comet          -> Koramangala Hub   @ 12:30 for 1 slot(s) (7.8 kWh, wait 1)
+    car #11 Tata Nexon EV     -> Indiranagar Point @ 12:30 for 1 slot(s) (17.0 kWh, wait 0)
+    car #00 Tata Nexon EV     -> Koramangala Hub   @ 13:00 for 2 slot(s) (25.5 kWh, wait 0)
+    car #03 Mahindra XUV400   -> Whitefield Mega   @ 13:00 for 1 slot(s) (17.3 kWh, wait 0)
+    car #08 Tata Tigor EV     -> Hebbal Rapid      @ 13:00 for 1 slot(s) (16.9 kWh, wait 0)
+    car #14 Hyundai Creta EV  -> Indiranagar Point @ 13:00 for 1 slot(s) (23.6 kWh, wait 2)
+    car #04 BYD e6            -> E-City Charge     @ 13:30 for 2 slot(s) (38.0 kWh, wait 0)
+    car #06 Hyundai Kona      -> Indiranagar Point @ 13:30 for 2 slot(s) (27.4 kWh, wait 0)
+    car #01 MG ZS EV          -> Koramangala Hub   @ 14:00 for 2 slot(s) (25.1 kWh, wait 3)
+    car #09 Kia EV6           -> Indiranagar Point @ 14:30 for 2 slot(s) (32.5 kWh, wait 1)
+    car #10 Citroen eC3       -> E-City Charge     @ 15:00 for 1 slot(s) (17.8 kWh, wait 0)
+    car #13 MG Windsor        -> Koramangala Hub   @ 15:00 for 2 slot(s) (31.2 kWh, wait 4)
+    car #12 Mahindra BE 6     -> Indiranagar Point @ 16:00 for 2 slot(s) (41.1 kWh, wait 0)
+
+[5] METRICS (full grid):
+    Greedy     total     4,206 Rs | energy    2,070 Rs | wait   1,830 Rs | avg wait 0.93 slots | max wait 4 | renewable 74.4% | violations 0
+    Annealing  total     4,180 Rs | energy    2,101 Rs | wait   1,440 Rs | avg wait 0.73 slots | max wait 4 | renewable 74.4% | violations 0
+
+Charts -> /home/z/my-project/download/Q-Grid/charts
+Results -> /home/z/my-project/download/Q-Grid/results/results.json
