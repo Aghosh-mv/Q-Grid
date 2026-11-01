@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "system": "Q Grid \u2014 year-scale city simulation",
+    "by": "JustCode \u00d7 Qub3RAM.team",
+    "city": "Tokyo, Japan (10 wards)",
+    "currency": "JPY",
+    "seed": 42,
+    "days": 365,
+    "windows": 244,
+    "slots_total": 17520,
+    "wall_clock_s": 158.8,
+    "simulated_hours": 8760,
+    "compression_ratio": 198530.0,
+    "compression_line": "1 simulated year = 2.6 min of laptop time (198,530x faster than realtime)",
+    "engine": "Greedy FCFS + structured SA (all windows) + QAOA p=1 on top-0 crunch windows + dual-track audit on 5 matched cells"
+  },
+  "kpi": {
+    "cars_served": 7062,
+    "sessions": 7045,
+    "energy_kwh": 154250.0,
+    "renewable_share_pct": 8.4,
+    "total_cost_jpy": 7454809.4,
+    "savings_vs_fcfs_jpy": 19760.6,
+    "savings_jpy_m": 0.02,
+    "savings_pct": 0.26,
+    "avg_wait_slots": 0.325,
+    "capacity_violations": 0,
+    "cloud_days": 40,
+    "deferred_load_events": 5,
+    "windows_sa": 242,
+    "windows_greedy_easy": 2,
+    "mean_sa_gain_pct": 0.2
+  },
+  "fleet": {
+    "start": 48,
+    "end": 180
+  },
+  "grid": {
+    "stations_start": 8,
+    "stations_end": 11
+  },
+  "monthly": [
+    {
+      "month": "2025-05",
+      "days": 31,
+      "cars_served": 3397,
+      "energy_kwh": 73284.9,
+      "cost_jpy_m": 3.46,
+      "renewable_pct": 10.0,
+      "cost_per_day": 111754.1
+    },
+    {
+      "month": "2025-06",
+      "days": 30,
+      "cars_served": 3665,
+      "energy_kwh": 80965.1,
+      "cost_jpy_m": 3.99,
+      "renewable_pct": 6.9,
+      "cost_per_day": 133014.4
+    }
+  ],
+  "quantum_audit": {
+    "method": "matched crunch cells: the identical subproblem through the exact optimum, greedy FCFS, SA (classical HPC track) and QAOA p=1 (quantum track, statevector sim); gap = (cost - exact) / exact",
+    "windows_audited": 5,
+    "qubits_range": [
+      11,
+      20
+    ],
+    "mean_gap_pct": {
+      "greedy": 2.15,
+      "sa": 2.15,
+      "qaoa": 0.0
+    },
+    "mean_time_s": {
+      "sa": 0.08,
+      "qaoa": 13.02
+    },
+    "gap_by_contest_band": {
+      "low": {
+        "n": 2,
+        "crunch_range": [
+          1.615,
+          4.182
+        ],
+        "greedy_gap_pct": 5.37,
+        "sa_gap_pct": 5.37,
+        "qaoa_gap_pct": 0.0
+      },
+      "mid": {
+        "n": 2,
+        "crunch_range": [
+          4.308,
+          4.308
+        ],
+        "greedy_gap_pct": 0.0,
+        "sa_gap_pct": 0.0,
+        "qaoa_gap_pct": 0.0
+      },
+      "high": {
+        "n": 1,
+        "crunch_range": [
+          4.455,
+          4.455
+        ],
+        "greedy_gap_pct": 0.0,
+        "sa_gap_pct": 0.0,
+        "qaoa_gap_pct": 0.0
+      }
+    },
+    "qaoa_ensemble_plans_within_5pct_mean": 1.0
+  },
+  "qaoa_crunch": [],
+  "top5_crunch_windows": [
+    {
+      "win_id": 530,
+      "day": 133,
+      "window": "12:00-18:00",
+      "n_cars": 49,
+      "crunch": 4.455
+    },
+    {
+      "win_id": 626,
+      "day": 157,
+      "window": "12:00-18:00",
+      "n_cars": 56,
+      "crunch": 4.308
+    },
+    {
+      "win_id": 723,
+      "day": 181,
+      "window": "18:00-24:00",
+      "n_cars": 56,
+      "crunch": 4.308
+    },
+    {
+      "win_id": 507,
+      "day": 127,
+      "window": "18:00-24:00",
+      "n_cars": 46,
+      "crunch": 4.182
+    },
+    {
+      "win_id": 610,
+      "day": 153,
+      "window": "12:00-18:00",
+      "n_cars": 53,
+      "crunch": 4.077
+    }
+  ]
+}

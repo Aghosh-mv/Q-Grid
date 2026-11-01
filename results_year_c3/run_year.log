@@ -1,0 +1,26 @@
+==========================================================================
+Q GRID — YEAR-SCALE SIMULATION | days=365 [122..183) qaoa=0 seed=42
+==========================================================================
+  [world] day   0: station #00 online — Shibuya Hub (2 ports @ 75 kW)
+  [world] day   0: station #01 online — Shinjuku Point (2 ports @ 75 kW)
+  [world] day   0: station #02 online — Ginza Mega Depot (3 ports @ 150 kW)
+  [world] day   0: station #03 online — Marunouchi Mall (2 ports @ 150 kW)
+  [world] day  75: station #04 online — Shinagawa Rapid (2 ports @ 75 kW)
+  [world] day 135: station #05 online — Ikebukuro Prime (2 ports @ 150 kW)
+  [world] day 190: station #06 online — Ueno Edge (2 ports @ 75 kW)
+  [world] day 240: station #07 online — Akihabara Mega Works (3 ports @ 150 kW)
+  [world] day 285: station #08 online — Roppongi Central (2 ports @ 50 kW)
+  [world] day 320: station #09 online — Odaiba Bay (2 ports @ 150 kW)
+  [world] day 350: station #10 online — Shibuya Hub (2 ports @ 150 kW)
+[world] 11 stations total; fleet 48 -> 180 EVs
+[sim] window   720/244 (day 180) | elapsed  150.3s | ETA  -99.4s | last window: 33 cars, SA, cost ¥46,115.2
+--------------------------------------------------------------------------
+[audit] dual-track audit on 5 matched windows stratified across the year's contest range (exact | greedy | SA | QAOA):
+  [audit] win 515: skip (exact=inf)
+  [audit] win 530 (day 133, crunch 4.46, 12q): exact ¥4,292.4 | greedy gap 0.0% | SA gap 0.0% (0.0642s) | QAOA gap 0.0% (0.12s) | ensemble 1 plans ≤5%
+  [audit] win 601 (day 151, crunch 1.61, 11q): exact ¥3,332.1 | greedy gap 10.73% | SA gap 10.73% (0.067s) | QAOA gap 0.0% (0.07s) | ensemble 1 plans ≤5%
+  [audit] win 606: skip (exact=inf)
+  [audit] win 668: skip (n=0, hot_cars=0, hot_stations=2)
+  [audit] win 626 (day 157, crunch 4.31, 11q): exact ¥6,355.5 | greedy gap 0.0% | SA gap 0.0% (0.0543s) | QAOA gap 0.0% (0.07s) | ensemble 1 plans ≤5%
+  [audit] win 723 (day 181, crunch 4.31, 11q): exact ¥9,147.4 | greedy gap 0.0% | SA gap 0.0% (0.0538s) | QAOA gap 0.0% (0.07s) | ensemble 1 plans ≤5%
+  [audit] win 507 (day 127, crunch 4.18, 20q): exact ¥2,856.0 | greedy gap 0.0% | SA gap 0.0% (0.1421s) | QAOA gap 0.0% (64.76s) | ensemble 1 plans ≤5%

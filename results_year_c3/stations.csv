@@ -1,0 +1,12 @@
+sid,name,zone,ports,power_kw,active_day
+0,Shibuya Hub,Shibuya,2,75.0,0
+1,Shinjuku Point,Shinjuku,2,75.0,0
+2,Ginza Mega Depot,Ginza,3,150.0,0
+3,Marunouchi Mall,Marunouchi,2,150.0,0
+4,Shinagawa Rapid,Shinagawa,2,75.0,75
+5,Ikebukuro Prime,Ikebukuro,2,150.0,135
+6,Ueno Edge,Ueno,2,75.0,190
+7,Akihabara Mega Works,Akihabara,3,150.0,240
+8,Roppongi Central,Roppongi,2,50.0,285
+9,Odaiba Bay,Odaiba,2,150.0,320
+10,Shibuya Hub,Shibuya,2,150.0,350
