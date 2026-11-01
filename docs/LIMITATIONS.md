@@ -2,7 +2,7 @@
 
 **Q Grid by JustCode, in collaboration with Qub3RAM.team** — hybrid quantum + classical EV charging dispatch, Tokyo.
 
-Hackathon judges consistently reward teams who find their own limits before the judges do, so this page is the ten weakest points of Q Grid, stated plainly. Each limitation below carries a mitigation we actually built and shipped, with a pointer to working code or committed data in this repo — not a promise. Where a number is not yet measured, we write "(benchmark running)" rather than quote one we do not have.
+Hackathon judges consistently reward teams who find their own limits before the judges do, so this page is the ten weakest points of Q Grid, stated plainly. Each limitation below carries a mitigation we actually built and shipped, with a pointer to working code or committed data in this repo — not a promise. Every number below is measured and committed — nothing on this page is a projection.
 
 ## 1. Our QPU is a simulator — NISQ noise is not modeled.
 
